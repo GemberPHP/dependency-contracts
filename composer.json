@@ -1,0 +1,33 @@
+{
+    "name": "gember/dependency-contracts",
+    "description": "Dependency contracts for gember/event-sourcing",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "cqrs",
+        "dcb",
+        "ddd",
+        "domain-driven-design",
+        "dynamic-consistency-boundary",
+        "event-sourcing",
+        "gember"
+    ],
+    "authors": [
+        {
+            "name": "Jeroen de Graaf",
+            "email": "gember@jero.work",
+            "homepage": "https://jero.work"
+        }
+    ],
+    "require": {
+        "php": "^8.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gember\\DependencyContracts\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
