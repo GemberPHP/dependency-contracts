@@ -14,14 +14,10 @@ interface RdbmsSagaStoreRepository
      */
     public function get(string $sagaName, string|Stringable $sagaId): RdbmsSaga;
 
-    /**
-     * @param array<string, mixed> $metadata
-     */
     public function save(
         string $sagaName,
         string|Stringable $sagaId,
         string $payload,
-        array $metadata,
         DateTimeImmutable $now,
     ): RdbmsSaga;
 }
