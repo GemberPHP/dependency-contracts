@@ -12,12 +12,12 @@ interface RdbmsSagaStoreRepository
     /**
      * @throws RdbmsSagaNotFoundException
      */
-    public function get(string $sagaName, string|Stringable $sagaId): RdbmsSaga;
+    public function get(string $sagaName, string|Stringable ...$sagaIds): RdbmsSaga;
 
     public function save(
         string $sagaName,
-        string|Stringable $sagaId,
         string $payload,
         DateTimeImmutable $now,
+        string|Stringable ...$sagaIds,
     ): RdbmsSaga;
 }

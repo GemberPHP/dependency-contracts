@@ -9,8 +9,12 @@ use Stringable;
 
 final class RdbmsSagaNotFoundException extends Exception
 {
-    public static function withSagaId(string $sagaName, string|Stringable $sagaId): self
+    public static function create(string $sagaName, string|Stringable ...$sagaIds): self
     {
-        return new self(sprintf("Saga '%s' with id %s not found in SagaStore", $sagaName, $sagaId));
+        return new self(sprintf(
+            "Saga '%s' with id(s) %s not found in SagaStore",
+            $sagaName,
+            implode(', ', array_map(fn($sagaId) => (string) $sagaId, $sagaIds)),
+        ));
     }
 }
