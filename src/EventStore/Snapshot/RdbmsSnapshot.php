@@ -13,6 +13,7 @@ final readonly class RdbmsSnapshot
      * @param list<string> $eventNames
      */
     public function __construct(
+        public string $id,
         public array $domainTags,
         public array $eventNames,
         public string $lastEventId,
