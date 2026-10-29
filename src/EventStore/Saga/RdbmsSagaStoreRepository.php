@@ -20,8 +20,10 @@ interface RdbmsSagaStoreRepository
      *
      * A saga id value belongs to at most one saga per saga name.
      *
-     * @throws RdbmsSagaConcurrencyException when the saga was changed or created concurrently (retryable)
-     * @throws RdbmsSagaIdAlreadyInUseException when a saga id already belongs to another saga (not retryable)
+     * @throws RdbmsSagaConcurrencyException when the saga was changed concurrently, or a saga id of a new saga is
+     *                                       taken (created concurrently: reloading finds it) (retryable)
+     * @throws RdbmsSagaIdAlreadyInUseException when a saga id added to an existing saga already belongs to another
+     *                                          saga (not retryable)
      */
     public function save(
         string $sagaName,
