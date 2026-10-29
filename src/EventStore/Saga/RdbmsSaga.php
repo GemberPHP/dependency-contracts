@@ -19,5 +19,6 @@ final readonly class RdbmsSaga
         public string $payload,
         public DateTimeImmutable $createdAt,
         public ?DateTimeImmutable $updatedAt,
+        public int $revision,
     ) {}
 }
