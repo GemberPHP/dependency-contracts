@@ -14,4 +14,9 @@ interface Transactional
      * @return T
      */
     public function transactional(callable $operation): mixed;
+
+    /**
+     * Whether a transaction is active, e.g. one opened by the application around the current operation.
+     */
+    public function isActive(): bool;
 }
