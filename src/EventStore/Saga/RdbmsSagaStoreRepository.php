@@ -15,17 +15,19 @@ interface RdbmsSagaStoreRepository
     public function get(string $sagaName, string|Stringable ...$sagaIds): RdbmsSaga;
 
     /**
-     * Saves the saga, provided it is still at $expectedRevision: the revision it was loaded with (null for a new saga).
-     * Saga ids are unique per saga name.
+     * Saves the saga. $previous is the saga as it was loaded (or last saved), null for a new saga: the save only
+     * succeeds while the stored saga is still at its revision.
      *
-     * @throws RdbmsSagaConcurrencyException when the saga was changed or created concurrently, or a saga id already
-     *                                       belongs to another saga
+     * A saga id value belongs to at most one saga per saga name.
+     *
+     * @throws RdbmsSagaConcurrencyException when the saga was changed or created concurrently (retryable)
+     * @throws RdbmsSagaIdAlreadyInUseException when a saga id already belongs to another saga (not retryable)
      */
     public function save(
         string $sagaName,
         string $payload,
         DateTimeImmutable $now,
-        ?int $expectedRevision,
+        ?RdbmsSaga $previous,
         string|Stringable ...$sagaIds,
     ): RdbmsSaga;
 }
