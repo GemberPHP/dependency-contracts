@@ -7,10 +7,11 @@ namespace Gember\DependencyContracts\Outbox\Rdbms;
 interface RdbmsOutboxRepository
 {
     /**
-     * Retrieve unprocessed outbox messages that have not been dead-lettered.
+     * Claims and returns unprocessed outbox messages that have not been dead-lettered.
      *
-     * Implementations should use SELECT ... FOR UPDATE SKIP LOCKED
-     * to prevent concurrent processors from picking up the same messages.
+     * The returned messages are claimed for this processor until a lease expires, so concurrent processors don't get
+     * them; after the lease (e.g. when the processor crashed), other processors take them over. The claim must be
+     * committed before returning: the messages are dispatched outside any transaction.
      *
      * @return list<RdbmsOutboxMessage>
      */
@@ -21,7 +22,8 @@ interface RdbmsOutboxRepository
     public function markAsProcessed(string ...$messageIds): void;
 
     /**
-     * Increment the retry count and dead-letter the message if maxRetries is reached.
+     * Increment the retry count of messages claimed by this processor, dead-letter them if maxRetries is reached, and
+     * release them for a retry.
      */
     public function incrementRetryCount(int $maxRetries, string ...$messageIds): void;
 }
