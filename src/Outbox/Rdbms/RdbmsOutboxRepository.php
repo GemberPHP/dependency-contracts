@@ -12,7 +12,7 @@ interface RdbmsOutboxRepository
      * The returned messages are claimed for this processor until a lease expires, so concurrent processors don't get
      * them; after the lease (e.g. when the processor crashed), other processors take them over. Called outside any
      * transaction (as processors should be), the claim is committed before returning, and the messages are dispatched
-     * outside a transaction.
+     * outside a transaction. Messages waiting for a retry (after a failed dispatch) aren't returned before it's due.
      *
      * @return list<RdbmsOutboxMessage>
      */
@@ -23,8 +23,9 @@ interface RdbmsOutboxRepository
     public function markAsProcessed(string ...$messageIds): void;
 
     /**
-     * Increment the retry count of messages claimed by this processor that aren't processed, dead-letter them if
-     * maxRetries is reached, and release them for a retry.
+     * Increment the retry count of messages claimed by this processor that aren't processed, and release them for a
+     * retry after a backoff. They're dead-lettered after the first attempt and maxRetries retries (when the retry count
+     * exceeds maxRetries).
      */
     public function incrementRetryCount(int $maxRetries, string ...$messageIds): void;
 }
